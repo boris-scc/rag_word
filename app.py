@@ -1,17 +1,15 @@
 import os
-from dotenv import load_dotenv
-from langchain import hub
-from langchain_openai import AzureChatOpenAI
-from langchain_community.document_loaders import (AzureAIDocumentIntelligenceLoader,
-                                                  DirectoryLoader, UnstructuredWordDocumentLoader)
-from langchain_openai import AzureOpenAIEmbeddings
-from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.schema import StrOutputParser
-from langchain.schema.runnable import RunnablePassthrough, RunnableMap
-from langchain.text_splitter import MarkdownHeaderTextSplitter
-from langchain_community.vectorstores import AzureSearch
 from operator import itemgetter
 
+from dotenv import load_dotenv
+from langchain import hub
+from langchain.schema import StrOutputParser
+from langchain.schema.runnable import RunnablePassthrough, RunnableMap
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_community.document_loaders import (AzureAIDocumentIntelligenceLoader)
+from langchain_community.vectorstores import AzureSearch
+from langchain_openai import AzureChatOpenAI
+from langchain_openai import AzureOpenAIEmbeddings
 
 load_dotenv()
 
