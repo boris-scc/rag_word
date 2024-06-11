@@ -7,9 +7,11 @@ from langchain_community.document_loaders import (AzureAIDocumentIntelligenceLoa
 from langchain_openai import AzureOpenAIEmbeddings
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.schema import StrOutputParser
-from langchain.schema.runnable import RunnablePassthrough
+from langchain.schema.runnable import RunnablePassthrough, RunnableMap
 from langchain.text_splitter import MarkdownHeaderTextSplitter
 from langchain_community.vectorstores import AzureSearch
+from operator import itemgetter
+
 
 load_dotenv()
 
@@ -103,3 +105,23 @@ rag_chain = (
 
 res = rag_chain.invoke("quelle est son niveau anglais?")
 print(res)
+
+
+rag_chain_from_docs = (
+    {
+        "context": lambda input: format_docs(input["documents"]),
+        "question": itemgetter("question"),
+    }
+    | prompt
+    | llm
+    | StrOutputParser()
+)
+rag_chain_with_source = RunnableMap(
+    {"documents": retriever, "question": RunnablePassthrough()}
+) | {
+    "documents": lambda input: [doc.metadata for doc in input["documents"]],
+    "answer": rag_chain_from_docs,
+}
+
+result = rag_chain_with_source.invoke("quelle est sa formation?")
+print(result)
