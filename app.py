@@ -45,7 +45,7 @@ docs = loader.load()
 # splits = text_splitter.split_text(docs_string)
 
 
-#splitting the text into
+# splitting the text into
 text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=200)
 splits = text_splitter.split_documents(docs)
 print("Length of splits: " + str(len(splits)))
@@ -54,7 +54,7 @@ print("Length of splits: " + str(len(splits)))
 # Embed the splitted documents and insert into Azure Search vector store
 
 aoai_embeddings = AzureOpenAIEmbeddings(
-    azure_deployment="textEmbed",
+    azure_deployment="text-embedding-ada-002",
     openai_api_version="2023-12-01-preview",  # e.g., "2023-12-01-preview"
 )
 
@@ -121,5 +121,5 @@ rag_chain_with_source = RunnableMap(
     "answer": rag_chain_from_docs,
 }
 
-result = rag_chain_with_source.invoke("quelle est sa formation?")
+result = rag_chain_with_source.invoke("quelles sont ses compétences techniques?")
 print(result)
